@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import * as authOperations from '../../redux/auth/auth-operations';
 import TextField from '@material-ui/core/TextField';
@@ -32,113 +32,104 @@ const styles = theme => ({
   },
 });
 
-export class Register extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-  };
+const Register = ({ onRegister, classes }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPass] = useState('');
 
-  handleInput = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onRegister(this.state);
-    this.setState({ name: '', email: '', password: '' });
+    onRegister({ name: name, email: email, password: password });
+    setName('');
+    setEmail('');
+    setPass('');
   };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography
-            component="h1"
-            variant="h5"
-            align="center"
-            color="textSecondary"
-          >
-            Страница регистрации пользователя
-          </Typography>
-          <form
-            className={classes.form}
-            noValidate
-            onSubmit={this.handleSubmit}
-            autoComplete="off"
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  label="Name"
-                  variant="outlined"
-                  required
-                  onChange={this.handleInput}
-                  name="name"
-                  id="register-name"
-                  value={this.state.name}
-                  fullWidth
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="E-mail"
-                  variant="outlined"
-                  required
-                  onChange={this.handleInput}
-                  name="email"
-                  id="register-email"
-                  value={this.state.email}
-                  style={styles.input}
-                  fullWidth
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Password"
-                  variant="outlined"
-                  required
-                  onChange={this.handleInput}
-                  name="password"
-                  type="password"
-                  id="register-password"
-                  value={this.state.password}
-                  style={styles.input}
-                  fullWidth
-                  autoComplete="on"
-                />
-              </Grid>
-              <Button
-                type="submit"
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography
+          component="h1"
+          variant="h5"
+          align="center"
+          color="textSecondary"
+        >
+          Страница регистрации пользователя
+        </Typography>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Name"
+                variant="outlined"
+                required
+                onChange={e => setName(e.target.value)}
+                name="name"
+                id="register-name"
+                value={name}
                 fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Зарегистрироваться
-              </Button>
-              <Grid container justifyContent="flex-end"></Grid>
-              <Grid item>
-                <Link to="/login" variant="body2">
-                  Уже есть аккаунт? Войти
-                </Link>
-              </Grid>
+                autoFocus
+              />
             </Grid>
-          </form>
-        </div>
-      </Container>
-    );
-  }
-}
+            <Grid item xs={12}>
+              <TextField
+                label="E-mail"
+                variant="outlined"
+                required
+                onChange={e => setEmail(e.target.value)}
+                name="email"
+                id="register-email"
+                value={email}
+                style={styles.input}
+                fullWidth
+                autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Password"
+                variant="outlined"
+                required
+                onChange={e => setPass(e.target.value)}
+                name="password"
+                type="password"
+                id="register-password"
+                value={password}
+                style={styles.input}
+                fullWidth
+                autoComplete="on"
+              />
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Зарегистрироваться
+            </Button>
+            <Grid container justifyContent="flex-end"></Grid>
+            <Grid item>
+              <Link to="/login" variant="body2">
+                Уже есть аккаунт? Войти
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+    </Container>
+  );
+};
 
 const mapDispatchToProps = dispatch => ({
   onRegister: data => dispatch(authOperations.register(data)),
