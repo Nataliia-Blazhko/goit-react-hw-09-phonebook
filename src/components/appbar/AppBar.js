@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Navigation from '../navigation/Navigation';
 import UserMenu from '../usermenu/UserMenu';
 import AuthNav from '../authnav/AuthNav';
@@ -17,8 +17,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AppBar = ({ isAuthenticated }) => {
+const AppBar = () => {
   const classes = useStyles();
+  const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
 
   return (
     <div className={classes.root}>
@@ -34,7 +35,4 @@ const AppBar = ({ isAuthenticated }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isAuthenticated: authSelectors.getIsAuthenticated(state),
-});
-export default connect(mapStateToProps)(AppBar);
+export default AppBar;

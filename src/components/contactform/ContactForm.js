@@ -1,7 +1,7 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addContact } from '../../redux/phonebook/phonebook-operations';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact as addContactsToState } from '../../redux/phonebook/phonebook-operations';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -18,9 +18,12 @@ const styles = theme => ({
   },
 });
 
-const ContactForm = ({ contacts, addContactToState, classes }) => {
+const ContactForm = ({ classes }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const contacts = useSelector(state => state.phonebook.contacts);
+  const dispatch = useDispatch();
 
   const addContact = contact => {
     if (contacts.find(person => person.name === contact.name)) {
@@ -31,7 +34,7 @@ const ContactForm = ({ contacts, addContactToState, classes }) => {
       alert(`${contact.number} is already in contacts`);
       return;
     }
-    addContactToState(contact);
+    dispatch(addContactsToState(contact));
     clearForm();
   };
 
@@ -42,7 +45,7 @@ const ContactForm = ({ contacts, addContactToState, classes }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    addContactToState({ name: name, number: number });
+    addContact({ name: name, number: number });
     clearForm();
   };
 
@@ -61,8 +64,10 @@ const ContactForm = ({ contacts, addContactToState, classes }) => {
               <TextField
                 label="Имя"
                 variant="filled"
-                onChange={this.handleInput}
-                value={this.state.name}
+                onChange={e => {
+                  setName(e.target.value);
+                }}
+                value={name}
                 id="name"
                 type="text"
                 name="name"
@@ -75,8 +80,10 @@ const ContactForm = ({ contacts, addContactToState, classes }) => {
               <TextField
                 label="Номер телефону"
                 variant="filled"
-                onChange={this.handleInput}
-                value={this.state.number}
+                onChange={e => {
+                  setNumber(e.target.value);
+                }}
+                value={number}
                 id="number"
                 type="tel"
                 name="number"
@@ -104,19 +111,5 @@ const ContactForm = ({ contacts, addContactToState, classes }) => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    contacts: state.phonebook.contacts,
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    addContactToState: contact => dispatch(addContact(contact)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles, { withTheme: true })(ContactForm));
+export default withStyles(styles, { withTheme: true })(ContactForm);
 ContactForm.propTypes = { addContact: PropTypes.func };

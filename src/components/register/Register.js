@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as authOperations from '../../redux/auth/auth-operations';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -32,11 +32,13 @@ const styles = theme => ({
   },
 });
 
-const Register = ({ onRegister, classes }) => {
+const Register = ({ classes }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPass] = useState('');
 
+  const dispatch = useDispatch();
+  const onRegister = data => dispatch(authOperations.register(data));
   const handleSubmit = e => {
     e.preventDefault();
     onRegister({ name: name, email: email, password: password });
@@ -131,11 +133,4 @@ const Register = ({ onRegister, classes }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  onRegister: data => dispatch(authOperations.register(data)),
-});
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(withStyles(styles, { withTheme: true })(Register));
+export default withStyles(styles, { withTheme: true })(Register);

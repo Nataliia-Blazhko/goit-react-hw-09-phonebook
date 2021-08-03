@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import ContactForm from '../contactform/ContactForm';
 import ContactList from '../contactlist/ContactList';
 import Filter from '../filter/Filter';
@@ -19,22 +18,20 @@ const styles = {
   },
 };
 
-export class Contacts extends Component {
-  render() {
-    return (
-      <div style={styles.div}>
-        <Typography variant="h3" style={styles.mainTitle}>
-          Телефонная книга
-        </Typography>
-        <ContactForm />
-        <Typography variant="h5" style={styles.subtitle}>
-          Контакти
-        </Typography>
-        <Filter />
-        <ContactList />
-      </div>
-    );
-  }
-}
+const Contacts = () => {
+  return (
+    <div style={styles.div}>
+      <Typography variant="h3" style={styles.mainTitle}>
+        Телефонная книга
+      </Typography>
+      <ContactForm />
+      <Typography variant="h5" style={styles.subtitle}>
+        Контакти
+      </Typography>
+      <Filter />
+      <ContactList />
+    </div>
+  );
+};
 
 export default Contacts;

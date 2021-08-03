@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 
@@ -26,18 +25,16 @@ const styles = {
   },
 };
 
-export class Home extends Component {
-  render() {
-    return (
-      <div style={styles.mainContainer}>
-        <div style={styles.container}>
-          <Typography style={styles.mainPageTitle} variant="h4" align="center">
-            Телефонная книга <ContactPhoneIcon style={styles.icon} />
-          </Typography>
-        </div>
-        <p>Все ваши контакты в одном месте</p>
+const Home = () => {
+  return (
+    <div style={styles.mainContainer}>
+      <div style={styles.container}>
+        <Typography style={styles.mainPageTitle} variant="h4" align="center">
+          Телефонная книга <ContactPhoneIcon style={styles.icon} />
+        </Typography>
       </div>
-    );
-  }
-}
+      <p>Все ваши контакты в одном месте</p>
+    </div>
+  );
+};
 export default Home;

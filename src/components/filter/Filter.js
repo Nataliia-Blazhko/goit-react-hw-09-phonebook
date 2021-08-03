@@ -1,6 +1,5 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { handleFilter } from '../../redux/phonebook/phonebook-actions';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
@@ -14,46 +13,36 @@ const styles = {
   },
 };
 
-export class Filter extends Component {
-  render() {
-    return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={12}>
-            <Typography
-              variant="h6"
-              className="text"
-              align="center"
-              style={styles.subtitle}
-            >
-              Найдите контакт по имени
-            </Typography>
-            <TextField
-              variant="outlined"
-              value={this.props.filter}
-              onChange={this.props.handleFilter}
-              type="text"
-              fullWidth
-            />
-          </Grid>
+const Filter = () => {
+  const filter = useSelector(state => state.phonebook.filter);
+  const dispatch = useDispatch();
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Grid container spacing={1}>
+        <Grid item xs={12} sm={12}>
+          <Typography
+            variant="h6"
+            className="text"
+            align="center"
+            style={styles.subtitle}
+          >
+            Найдите контакт по имени
+          </Typography>
+          <TextField
+            variant="outlined"
+            value={filter}
+            onChange={e => dispatch(handleFilter(e.target.value))}
+            type="text"
+            fullWidth
+          />
         </Grid>
-      </Container>
-    );
-  }
-}
-const mapStateToProps = state => {
-  return {
-    filter: state.phonebook.filter,
-  };
+      </Grid>
+    </Container>
+  );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    handleFilter: event => dispatch(handleFilter(event.target.value)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;
 
 Filter.propTypes = { filter: PropTypes.string, handleFilter: PropTypes.func };
