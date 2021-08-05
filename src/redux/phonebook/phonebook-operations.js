@@ -17,7 +17,7 @@ import {
 } from './phonebook-actions';
 
 export const addContact = contact => dispatch => {
-  if (!contact.name || !contact.email) {
+  if (!contact.name || !contact.number) {
     return;
   }
   dispatch(addContactRequest());
